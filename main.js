@@ -37,7 +37,7 @@ class Circle {
 		var detectionOne = RectCircleColliding(this, playerOne);
 		var detectionTwo = RectCircleColliding(this, playerTwo);
 
-		if (detectionOne == true || detectionTwo == true) {
+		if (detectionOne || detectionTwo) {
 
 			if(playerOne.dx > 0) {
 				this.velocity.x -= 3;
@@ -45,10 +45,6 @@ class Circle {
 
 			if(playerTwo.dx < 0) {
 				this.velocity.x += 3;
-			}
-
-			if(playerOne.dy < 0 || playerTwo.dy < 0) {
-				this.velocity.y = this.velocity.y;
 			}
 
 			this.velocity.x = -this.velocity.x;
@@ -72,7 +68,6 @@ class Circle {
 		this.y = centerY;
 		this.velocity.x = randomSpeed(setting.speed);
 		this.velocity.y = randomSpeed(setting.speed);
-		return;
 	}
 }
 
@@ -91,7 +86,6 @@ class Player {
 
 	move(direction) { //direction is a value between 1 and -1, if positive move down, if negative move down
 		this.dy = 3.5*direction;
-		return;
 	}
 
 	speedUp(direction) {
@@ -100,8 +94,6 @@ class Player {
 
 	pushForward(direction) { //direction is a value between 1 and -1, if positive move right if negative move left
 		this.dx = 5*direction;	
-		return;
-	 
 	}
 	pushBack(object) {
 		this.x = object.x;
@@ -156,7 +148,6 @@ class Player {
 	center() {
 		this.dy = 0;
 		this.y = 150;
-		return;
 	}
 
 	increasePoints() {
@@ -374,21 +365,4 @@ function RectCircleColliding(circle,rect){
     var dx=distX-rect.width/2;
     var dy=distY-rect.height/2;
     return (dx*dx+dy*dy<=(circle.radius*circle.radius));
-}
-
-function rotate(velocity, angle) {
-	const rotatedVelocities = {
-		x: velocity.x * Math.cos(angle) - velocity.y*Math.sin(angle),
-		y: velocity.x * Math.sin(angle) - velocity.y*Math.cos(angle)
-	};
-	return rotatedVelocities;
-}
-
-
-function momentum(ball, player) {
-	const angle = -Math.atan2(player.y-ball.y, player.x-ball.x);
-	const m1 = ball.masss;
-	const m2 = player.mass;
-	const u1 = rotate(ball.velocity, angle);
-	const u2 = rotate(player.dy, angle);
 }
