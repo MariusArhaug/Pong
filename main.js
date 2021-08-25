@@ -1,3 +1,5 @@
+
+import Player from './Player'
 class Circle {
 	constructor(x,y,dx,dy,radius,color) {
 		this.x = x;
@@ -71,92 +73,6 @@ class Circle {
 	}
 }
 
-
-class Player {
-	constructor(x,y,dy, width, height, color) {
-		this.x = x;
-		this.y = y;
-		this.dy = dy;
-		this.dx = 0;
-		this.width = width;
-		this.height = height;
-		this.color = color;
-		this.points = 0;
-	}
-
-	move(direction) { //direction is a value between 1 and -1, if positive move down, if negative move down
-		this.dy = 3.5*direction;
-	}
-
-	speedUp(direction) {
-		this.dy += 3.5*direction;
-	}
-
-	pushForward(direction) { //direction is a value between 1 and -1, if positive move right if negative move left
-		this.dx = 5*direction;	
-	}
-	pushBack(object) {
-		this.x = object.x;
-		this.dx = 0;	
-	}
-
-
-	draw() {
-		ctx.beginPath();
-		ctx.rect(this.x, this.y, this.width, this.height);
-		ctx.strokeStyle = this.color;
-		ctx.lineWidth = 2;
-		ctx.stroke();
-		ctx.closePath();
-	}
-
-	update() {
-		if (this.y + this.height + this.dy >= WindowHeight || this.y+this.dy <= 0) {
-			this.dy = -this.dy;
-		}
-		
-		//if x cordinates is more than 27.5 from start position reverse speed 
-		if (this.x > data.One.x+27.5) {
-			this.dx = -this.dx;			
-		}
-
-		if (this.x > data.Two.x-27.5) {
-			this.dx = -this.dx;
-		}
-
-		if (this.x < data.One.x) {
-			this.pushBack(data.One);
-		}
-		if (this.x > data.Two.x) {
-		 	this.pushBack(data.Two);
-		}
-
-		if (Math.abs(this.dy) > 3.5) {
-			this.dy = this.dy*0.985;
-			console.log(this.dy);
-		}
-
-		this.y += this.dy;
-
-		if(this.dx != 0) {
-			this.x += this.dx;
-		}
-
-		this.draw();
-	}
-
-	center() {
-		this.dy = 0;
-		this.y = 150;
-	}
-
-	increasePoints() {
-		this.points += 1;
-		if (this.points >= 10) {
-			stopGame();
-		}
-	}
-}
 
 	const windowWidth = window.innerWidth;
 	const WindowHeight = window.innerHeight-40; //-40 because scoreboard takes up upperspace
