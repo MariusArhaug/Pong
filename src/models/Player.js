@@ -1,23 +1,17 @@
-import { WINDOW_HEIGHT, DATA } from "./constants.js";
+import { WINDOW_HEIGHT, DATA } from "../constants/constants.js";
+import { Model } from "./Model.js";
 
-export default class Player {
-  constructor(ctx, x, y, dx, dy, width, height, color) {
-    this.ctx = ctx;
-    this.x = x;
-    this.y = y;
-    this.dx = dx;
-    this.dy = dy;
+export class Player extends Model {
+  constructor(ctx, x, y, dy, width, height, color, name) {
+    super(ctx, x, y, 0, dy, color);
     this.width = width;
     this.height = height;
-    this.color = color;
+    this.points = 0;
+    this.name = name;
   }
 
-  getDX() {
-    return this.dx;
-  }
-
-  getDY() {
-    return this.dy;
+  getName() {
+    return this.name;
   }
 
   getWidth() {
@@ -37,7 +31,7 @@ export default class Player {
     this.dy = 3.5 * direction;
   }
 
-  speedUp() {
+  speedUp(direction) {
     this.dy += 3.5 * direction;
   }
 
@@ -50,10 +44,14 @@ export default class Player {
     this.dx = 0;
   }
 
+  hasPushed() {
+    return this.getDX() < 0;
+  }
+
   draw() {
     this.ctx.beginPath();
     this.ctx.rect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
-    this.ctx.strokeStyle = this.color;
+    this.ctx.strokeStyle = this.getColor();
     this.ctx.lineWidth = 2;
     this.ctx.stroke();
     this.ctx.closePath();
@@ -68,19 +66,19 @@ export default class Player {
     }
 
     //if x cordinates is more than 27.5 from start position reverse speed
-    if (this.x > DATA.One.x + 27.5) {
+    if (this.x > DATA.PLAYER_ONE.x + 27.5) {
       this.dx = -this.dx;
     }
 
-    if (this.x > DATA.Two.x - 27.5) {
+    if (this.x > DATA.PLAYER_TWO.x - 27.5) {
       this.dx = -this.dx;
     }
 
-    if (this.x < DATA.One.x) {
-      this.pushBack(DATA.One.x);
+    if (this.x < DATA.PLAYER_ONE.x) {
+      this.pushBack(DATA.PLAYER_ONE.x);
     }
-    if (this.x > DATA.Two.x) {
-      this.pushBack(DATA.Two.x);
+    if (this.x > DATA.PLAYER_TWO.x) {
+      this.pushBack(DATA.PLAYER_TWO.x);
     }
 
     if (Math.abs(this.getDY()) > 3.5) {
@@ -103,8 +101,5 @@ export default class Player {
 
   increasePoints() {
     this.points++;
-    //if (this..points >= 10) {
-    //  stopGame();
-    //}
   }
 }
